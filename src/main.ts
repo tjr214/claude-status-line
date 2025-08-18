@@ -97,7 +97,7 @@ if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.2")
+      .version("0.1.4")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",

@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## ENTRY 4: The Great Simplification - When Less Becomes More
+
+Embraced the philosophical art of subtraction by refining Python environment detection to show only what truly matters - active environments rather than dormant archaeological artifacts. Removed the complexity of scanning for inactive .venv, venv, Poetry, Pipenv, and Conda environments lurking in directories, choosing instead to focus exclusively on the $VIRTUAL_ENV environment variable that indicates actual usage.
+
+### Minimalist Improvements Made:
+- **Detection Simplification**: Streamlined Python environment detection to only check $VIRTUAL_ENV
+- **Version Increment**: Bumped project version from 0.1.3 to 0.1.4 across all configuration files
+- **Documentation Alignment**: Updated README to accurately reflect the new focused detection approach
+- **Code Cleanup**: Removed unnecessary detection functions for inactive environments
+- **User Experience Enhancement**: Status line now respects user attention by showing only relevant active context
+
+This change follows the wisdom of Diogenes - cutting away the unnecessary to reveal what is essential. Why burden users with information about environments that exist but aren't being used? The result is a status line that speaks only when it has something meaningful to say, making the active Python environment indicator a signal of genuine intent rather than mere presence.
+
 ## ENTRY 3: Documentation Renaissance - When Words Finally Match Reality
 
 Orchestrated a comprehensive documentation synchronization session, bringing the README into perfect alignment with our evolved codebase. Updated version references from the antiquated 0.1.1 to our current 0.1.3, ensuring users aren't left wandering in version purgatory. Thoroughly documented the sophisticated Python environment detection capabilities with their elegant hierarchy of discovery, and provided crystal-clear guidance on the `--display-model` CLI option.

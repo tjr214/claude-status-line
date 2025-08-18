@@ -60,7 +60,7 @@ async function checkVirtualEnv(): Promise<PythonEnvInfo | null> {
     // First try to get name from pyvenv.cfg prompt
     const pyvenvConfig = join(virtualEnvPath, "pyvenv.cfg");
     let envName = virtualEnvPath.split("/").pop() || "venv";
-    
+
     if (existsSync(pyvenvConfig)) {
       const config = await readFile(pyvenvConfig);
       const promptMatch = config.match(/prompt\s*=\s*['"]?([^'"]+)['"]?/);
@@ -74,7 +74,7 @@ async function checkVirtualEnv(): Promise<PythonEnvInfo | null> {
         }
       }
     }
-    
+
     const pythonPath = join(virtualEnvPath, "bin", "python");
     const version = await getPythonVersion(pythonPath);
     if (version) {
@@ -97,7 +97,7 @@ async function checkVenvDirectory(
       // Extract custom prompt name from pyvenv.cfg if available
       const promptMatch = config.match(/prompt\s*=\s*['"]?([^'"]+)['"]?/);
       let envName = venvDir;
-      
+
       if (promptMatch && promptMatch[1]) {
         envName = promptMatch[1];
       } else {
@@ -199,31 +199,10 @@ export async function getPythonEnvInfo(
   currentDir: string,
 ): Promise<PythonEnvInfo | null> {
   try {
-    // Check in priority order
-
-    // 1. Active virtual environment (VIRTUAL_ENV)
+    // Only check for active virtual environment (VIRTUAL_ENV)
+    // This ensures we only display Python environment info when one is actually active
     const activeEnv = await checkVirtualEnv();
     if (activeEnv) return activeEnv;
-
-    // 2. Local .venv directory
-    const venvEnv = await checkVenvDirectory(currentDir, ".venv");
-    if (venvEnv) return venvEnv;
-
-    // 3. Local venv directory
-    const venvDirEnv = await checkVenvDirectory(currentDir, "venv");
-    if (venvDirEnv) return venvDirEnv;
-
-    // 4. Poetry environment
-    const poetryEnv = await checkPoetry(currentDir);
-    if (poetryEnv) return poetryEnv;
-
-    // 5. Pipenv environment
-    const pipenvEnv = await checkPipenv(currentDir);
-    if (pipenvEnv) return pipenvEnv;
-
-    // 6. Conda environment
-    const condaEnv = await checkConda(currentDir);
-    if (condaEnv) return condaEnv;
   } catch {
     // Silent failure - no Python environment detected
   }

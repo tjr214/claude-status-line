@@ -7,7 +7,7 @@ A TypeScript/Deno-based status line for Claude Code that displays project inform
 - 🤖 **Model Display**: Shows the current Claude model being used (optional)
 - 📁 **Project Info**: Displays project name and current directory
 - 🌿 **Git Integration**: Shows current git branch when in a repository
-- 🐍 **Python Environment Detection**: Displays active virtual environments, Poetry, Pipenv, and Conda environments
+- 🐍 **Python Environment Detection**: Displays active virtual environments (only when activated via VIRTUAL_ENV)
 - 💰 **Session Cost**: Displays current session cost in selected currency
 - 📈 **Context Usage**: Shows context token percentage
 - 🎨 **Clean Icons**: Uses emojis for visual clarity
@@ -20,7 +20,7 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4"
 	}
 }
 ```
@@ -36,7 +36,7 @@ Add the `--currency` flag to change the currency used for session cost display:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --currency USD"
 	}
 }
 ```
@@ -50,7 +50,7 @@ Add the `--display-model` flag to show the Claude model name in the status line:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --display-model"
 	}
 }
 ```
@@ -62,7 +62,7 @@ You can combine multiple options:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --currency USD --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --currency USD --display-model"
 	}
 }
 ```
@@ -113,16 +113,14 @@ It then builds a status line showing:
 
 ### Python Environment Detection
 
-The status line automatically detects Python environments in the following priority order:
+The status line detects Python environments only when they are actively in use:
 
-1. **Active Virtual Environment**: Checks `VIRTUAL_ENV` environment variable
-2. **Local .venv Directory**: Looks for `.venv/pyvenv.cfg` in current directory  
-3. **Local venv Directory**: Looks for `venv/pyvenv.cfg` in current directory
-4. **Poetry Environment**: Detects Poetry projects with `pyproject.toml` and `[tool.poetry]`
-5. **Pipenv Environment**: Detects Pipenv projects with `Pipfile`
-6. **Conda Environment**: Detects conda environments via `CONDA_DEFAULT_ENV`
+- **Active Virtual Environment**: Checks `VIRTUAL_ENV` environment variable
+- Works with any virtual environment tool (venv, Poetry, Pipenv, conda, etc.)
+- Only displays when an environment is actually activated
+- Shows environment name and Python version when available
 
-For each detected environment, it displays the environment name and extracts the Python version when possible.
+This ensures the Python environment indicator only appears when you're actually working within an activated environment, not just when environment files exist in the directory.
 
 ### Usage Tracking
 
