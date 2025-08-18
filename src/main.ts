@@ -10,6 +10,7 @@ import { Command } from "@cliffy/command";
 
 import { formatCurrency } from "./currency.ts";
 import { getGitInfo } from "./git.ts";
+import { getPythonEnvInfo } from "./python.ts";
 import type { ClaudeContext } from "./types.ts";
 
 async function buildStatusLine(currency: string): Promise<void> {
@@ -75,6 +76,12 @@ async function buildStatusLine(currency: string): Promise<void> {
   const gitInfo = await getGitInfo(currentDir);
   if (gitInfo) {
     components.push(`🌿 ${gitInfo.branch}`);
+  }
+
+  // Get Python environment information and add to components.
+  const pythonInfo = await getPythonEnvInfo(currentDir);
+  if (pythonInfo) {
+    components.push(`🐍 ${pythonInfo.name} (py${pythonInfo.version})`);
   }
 
   // Join components with separator and output
