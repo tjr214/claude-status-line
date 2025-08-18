@@ -86,7 +86,7 @@ if (import.meta.main) {
 	try {
 		await new Command()
 			.name("claude-status-line")
-			.version("0.1.1")
+			.version("0.1.2")
 			.description("A status line for Claude Code")
 			.option("-c, --currency <currency:string>", "Currency code for session cost display", {
 				default: "CAD",
