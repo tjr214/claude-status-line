@@ -4,9 +4,10 @@ A TypeScript/Deno-based status line for Claude Code that displays project inform
 
 ## Features
 
-- 🤖 **Model Display**: Shows the current Claude model being used
+- 🤖 **Model Display**: Shows the current Claude model being used (optional)
 - 📁 **Project Info**: Displays project name and current directory
 - 🌿 **Git Integration**: Shows current git branch when in a repository
+- 🐍 **Python Environment Detection**: Displays active virtual environments, Poetry, Pipenv, and Conda environments
 - 💰 **Session Cost**: Displays current session cost in selected currency
 - 📈 **Context Usage**: Shows context token percentage
 - 🎨 **Clean Icons**: Uses emojis for visual clarity
@@ -19,25 +20,52 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.1"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3"
 	}
 }
 ```
 
 ### Customization
 
-You can customize the currency used for session cost display by adding the `--currency` flag:
+You can customize the status line with the following options:
+
+#### Currency Display
+Add the `--currency` flag to change the currency used for session cost display:
 
 ```json
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.1 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --currency USD"
 	}
 }
 ```
 
 Supported currencies include: USD, EUR, GBP, JPY, AUD, and many others. Defaults to CAD.
+
+#### Model Display
+Add the `--display-model` flag to show the Claude model name in the status line:
+
+```json
+{
+	"statusLine": {
+		"type": "command",
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --display-model"
+	}
+}
+```
+
+#### Combined Options
+You can combine multiple options:
+
+```json
+{
+	"statusLine": {
+		"type": "command",
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.3 --currency USD --display-model"
+	}
+}
+```
 
 ## Development
 
@@ -76,11 +104,25 @@ interface ClaudeContext {
 It then builds a status line showing:
 
 - Project name (if different from current directory)
-- Model name with robot emoji
+- Model name with robot emoji (if enabled)
 - Session cost in desired currency (fetched from ccusage)
 - Context token usage percentage
 - Current directory with folder emoji
 - Git branch with branch emoji
+- Python environment name with snake emoji
+
+### Python Environment Detection
+
+The status line automatically detects Python environments in the following priority order:
+
+1. **Active Virtual Environment**: Checks `VIRTUAL_ENV` environment variable
+2. **Local .venv Directory**: Looks for `.venv/pyvenv.cfg` in current directory  
+3. **Local venv Directory**: Looks for `venv/pyvenv.cfg` in current directory
+4. **Poetry Environment**: Detects Poetry projects with `pyproject.toml` and `[tool.poetry]`
+5. **Pipenv Environment**: Detects Pipenv projects with `Pipfile`
+6. **Conda Environment**: Detects conda environments via `CONDA_DEFAULT_ENV`
+
+For each detected environment, it displays the environment name and extracts the Python version when possible.
 
 ### Usage Tracking
 
@@ -93,8 +135,19 @@ The status line tracks your Claude usage by:
 
 ### Example Output
 
+#### Full Status Line (with all features enabled)
 ```
-📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 📂 src | 🌿 feature-branch
+📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 📂 src | 🌿 feature-branch | 🐍 venv
+```
+
+#### Minimal Status Line (model display disabled)
+```
+📁 my-project | 💰 $0.45 session | 📈 67% | 📂 src | 🌿 feature-branch | 🐍 poetry-env
+```
+
+#### Without Python Environment
+```
+💰 $0.45 session | 📈 67% | 📂 claude-status-line | 🌿 main
 ```
 
 ## Troubleshooting
@@ -116,6 +169,15 @@ The status line tracks your Claude usage by:
 - Ensure the transcript path is accessible
 - Check that the transcript file contains valid data
 - Verify file read permissions for the transcript directory
+
+### Python Environment Not Detected
+
+- Ensure you're in a directory with a Python environment
+- Check that Python virtual environment is properly activated
+- For Poetry projects, ensure `pyproject.toml` exists with `[tool.poetry]` section
+- For Pipenv projects, ensure `Pipfile` exists in the project directory
+- For conda environments, check that `CONDA_DEFAULT_ENV` environment variable is set
+- Verify that Python executable is accessible in the environment's bin directory
 
 ## Contributing
 
