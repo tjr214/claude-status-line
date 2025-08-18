@@ -1,7 +1,7 @@
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@wyattjoh/claude-status-line"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line"
 	},
 	"permissions": {
 		"defaultMode": "acceptEdits",
@@ -28,6 +28,7 @@
 			"Bash(rm plan_from_gemini.md)",
 			"Bash(rm dev-journal/plan_from_gemini.md)",
 			"Bash(rm *test*)",
+			"Bash(deno:*)",
 			"Bash(ruff check:*)",
 			"Bash(pip install:*)",
 			"Bash(npx tsc:*)",
@@ -49,6 +50,7 @@
 			"Bash(git merge:*)",
 			"Bash(git branch:*)",
 			"Bash(git fetch:*)",
+			"Bash(git pull:*)",
 			"Bash(pytest:*)",
 			"Bash(python -m pytest:*)",
 			"Bash(python -m:*)",
