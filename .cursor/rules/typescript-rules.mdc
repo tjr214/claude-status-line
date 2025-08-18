@@ -1,0 +1,131 @@
+---
+description: 
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+# TypeScript Coding Rules for AI Assistants
+
+## Core Principles
+
+1. **Type Safety**: Always use strict TypeScript with explicit types
+2. **Testing Required**: Write tests for all code
+3. **Documentation**: JSDoc for public functions/classes
+4. **Security First**: Validate inputs, sanitize data, handle errors properly
+
+## Type Safety - MANDATORY
+
+```typescript
+// Explicit types always
+function processData(items: string[], config: Record<string, unknown>): string | null {
+	return null;
+}
+
+// Use strict mode, avoid any
+interface User {
+	id: number;
+	name: string;
+	email: string;
+}
+```
+
+## Documentation
+
+- Public functions/classes need JSDoc comments
+- Private/internal functions can skip if obvious
+- Use `@param`, `@returns`, `@throws` tags
+
+## Testing
+
+- Use Jest, Vitest, or framework's built-in testing
+- Test edge cases and error conditions
+- Descriptive test names: `should throw error when input is empty`
+
+## Error Handling
+
+- Use proper Error types with meaningful messages
+- Handle async errors with try/catch
+
+```typescript
+if (!data.length) {
+	throw new Error("Data array cannot be empty");
+}
+```
+
+## Security Rules
+
+- **Validate all inputs** before processing
+- **Sanitize user data** before database/DOM operations
+- **Never log sensitive data** (passwords, tokens, PII)
+- **Use parameterized queries** with SQL
+- **Avoid innerHTML**, use textContent or framework methods
+
+## Code Style
+
+- `camelCase` for functions/variables, `PascalCase` for classes/interfaces
+- `UPPER_SNAKE_CASE` for constants
+- Template literals for strings: `` `Hello ${name}` ``
+- Prefer interfaces over types for object shapes
+- Use readonly for immutable data
+
+## Modern TypeScript
+
+- **ESM modules**: Use `import/export`, not CommonJS `require()`
+- **async/await**: Prefer over `.then()` chains for promises
+- Use `satisfies` operator for type checking
+- Prefer `as const` for literal types
+- Use utility types: `Partial<T>`, `Pick<T, K>`, `Omit<T, K>`
+- Optional chaining: `user?.profile?.name`
+- Nullish coalescing: `value ?? defaultValue`
+
+## Performance
+
+- Use `async/await` for promises
+- Lazy loading with dynamic imports: `import('./module')`
+- Memoization for expensive calculations
+- Proper cleanup in useEffect (React) or similar
+
+## Required Tools
+
+- **ESLint**: Linting with TypeScript rules
+- **Prettier**: Code formatting
+- **TypeScript**: Strict mode enabled
+- **Jest/Vitest**: Testing framework
+- **pnpm**: For package installation (`pnpm install`)
+- **npm**: For running scripts (`npm run build`, `npm test`)
+
+## tsconfig.json Essentials
+
+```json
+{
+	"compilerOptions": {
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler"
+	}
+}
+```
+
+## Quick Checklist
+
+- [ ] All functions have explicit types
+- [ ] Public functions have JSDoc
+- [ ] Tests written and passing
+- [ ] Inputs validated and sanitized
+- [ ] No hardcoded secrets
+- [ ] No `any` types used
+- [ ] ESLint and TypeScript checks pass
+
+## Anti-Patterns to Avoid
+
+- ❌ Using `any` type (use `unknown` instead)
+- ❌ Non-null assertion `!` without good reason
+- ❌ Ignoring TypeScript errors with `@ts-ignore`
+- ❌ Using CommonJS `require()` instead of ESM `import`
+- ❌ Using `.then()` chains instead of `async/await`
+- ❌ Mutating props/parameters directly
+- ❌ String concatenation in SQL queries
+- ❌ Using `innerHTML` with user data
+- ❌ Functions longer than 50 lines
+- ❌ Not handling Promise rejections

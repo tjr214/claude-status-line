@@ -1,0 +1,54 @@
+# Add patterns to ignore here, one per line
+# Example:
+# *.log
+# tmp/
+
+.cursor/
+.gemini/
+.claude/
+
+.rulesets-backup
+
+.taskmaster/
+
+.repomixignore
+.cursorignore
+.gitignore
+
+.mcp.json
+.mcp.example.json
+
+git-checkpoint
+
+repomix-output.*
+repomix.config.json
+
+prompts/
+tasks/
+
+update_packages.sh
+
+scripts/update_scripts
+scripts/HOWTO*
+scripts/README*
+scripts/example_prd.*
+scripts/dev.js
+
+.python-version
+
+.env
+.env.sample
+.env.example
+
+GEMINI.md
+
+.aider.chat.history.md
+.aider.*
+.aider*
+
+plan_from_gemini.md
+
+dev-journal/plan_from_gemini.md
+dev-journal/OUR-PLAN.md
+
+dev-journal/previous-plans/*

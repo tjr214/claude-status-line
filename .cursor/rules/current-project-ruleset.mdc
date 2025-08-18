@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# **Ruleset for The Currently Active Project**
+
+This document defines everything you need to know about the project we are currently working on. Adhere to these rules at all times.
+
+## **1. Establish Project Context (Always Refer To This)**
+
+This is a project ruleset for our latest creation. The user will provide project-specific details in the sections below. Your first priority is to read and internalize the user-provided information.
+
+- **1.1. Project Description:** Locate the user's project description below. This defines the project's purpose.
+  ```
+  @dev-journal/PROJECT-DESCRIPTION.md
+  ```
+- **1.2. Technology Stack:** Locate the user's technology stack information below. This defines the tools, languages, and frameworks for the project.
+  ```
+  @dev-journal/TECH-STACK.md
+  ```
+
+## **2. The Product Requirements Document (PRD)**
+
+This is the document that defines the product requirements for the project. Always refer to this document and keep it in mind when making decisions and writing code.
+
+If the PRD is not provided, just let the user know that you don't have one and ask them to provide one. They may need to use task-master to create one.
+
+- **2.1. PRD Data:** Locate the project's PRD below. This defines the product requirements for the project.
+  ```
+  @dev-journal/PRD.md
+  ```

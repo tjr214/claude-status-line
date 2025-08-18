@@ -1,0 +1,90 @@
+---
+description: 
+globs: **/*.py
+alwaysApply: false
+---
+# Python Coding Rules for AI Assistants
+
+## Core Principles
+
+1. **Type Safety**: Always use type hints
+2. **Testing Required**: Write tests for all code
+3. **Documentation**: Docstrings for public functions/classes
+4. **Security First**: Validate inputs, use parameterized queries
+
+## Type Hints - MANDATORY
+
+```python
+def process_data(items: list[str], config: dict[str, Any]) -> str | None:
+    pass
+
+# Use modern syntax: list[str] vs List[str], int | str vs Union[int, str]
+```
+
+## Documentation
+
+- Public functions/classes need docstrings (Google format: Args, Returns, Raises)
+- Private/internal functions can skip docstrings if obvious
+
+## Testing
+
+- Use pytest
+- Test edge cases and error conditions
+- Descriptive test names: `test_function_with_empty_input_raises_error()`
+
+## Error Handling
+
+- Specific exception types with meaningful messages
+- Document exceptions in docstrings
+
+```python
+if not data:
+    raise ValueError("Data cannot be empty")
+```
+
+## Security Rules
+
+- **Validate all inputs** before processing
+- **Parameterized queries**: `query = "SELECT * FROM users WHERE id = %s"; execute(query, (user_id,))`
+- **Never log sensitive data** (passwords, tokens, PII)
+- **Sanitize file paths** to prevent traversal
+
+## Code Style
+
+- `snake_case` functions/variables, `PascalCase` classes, `UPPER_CASE` constants
+- f-strings for formatting: `f"Hello {name}"`
+- dataclasses for structured data
+- Import order: stdlib, third-party, local
+
+## Performance
+
+- Generators for large datasets: `yield` instead of building lists
+- Context managers for resources: `with open() as f:`
+- `functools.lru_cache` for expensive calculations
+- `async/await` for I/O operations
+
+## Required Tools
+
+- **ruff**: Linting/formatting
+- **mypy**: Type checking
+- **pytest**: Testing
+- **bandit**: Security scanning
+
+## Quick Checklist
+
+- [ ] All functions have type hints
+- [ ] Public functions have docstrings
+- [ ] Tests written and passing
+- [ ] Inputs validated
+- [ ] No hardcoded secrets
+- [ ] Code formatted and type-checked
+
+## Anti-Patterns to Avoid
+
+- ❌ Missing type hints
+- ❌ String formatting in SQL: `f"SELECT * FROM users WHERE id = {user_id}"`
+- ❌ Catching bare `Exception` without re-raising
+- ❌ Hardcoded passwords/API keys
+- ❌ Functions longer than 50 lines
+- ❌ Using `eval()` or `exec()`
+- ❌ Mutating function arguments

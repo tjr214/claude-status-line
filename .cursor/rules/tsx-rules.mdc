@@ -1,0 +1,91 @@
+---
+description: 
+globs: **/*.tsx
+alwaysApply: false
+---
+# TSX React Coding Rules for AI Assistants
+
+## Core Principles
+
+1. **Functional Components**: Use function components with hooks
+2. **Strict Typing**: Type all props, state, and event handlers
+3. **Performance**: React.memo, useCallback, useMemo when needed
+4. **Accessibility**: Semantic HTML and ARIA attributes
+
+## Component Structure
+
+```tsx
+interface UserCardProps {
+	user: User;
+	onEdit?: (id: number) => void;
+	className?: string;
+}
+
+export function UserCard({ user, onEdit, className }: UserCardProps) {
+	return <div className={cn("p-4 border rounded", className)}>...</div>;
+}
+```
+
+## State & Event Handlers
+
+- `useState<Type>(initialValue)` for typed state
+- `useReducer` for complex state logic
+- Type events: `React.FormEvent<HTMLFormElement>`, `React.ChangeEvent<HTMLInputElement>`
+
+## Performance Optimization
+
+- `React.memo()` for expensive components
+- `useCallback()` for functions passed as props
+- `useMemo()` for expensive calculations
+- Don't create objects/functions in render
+
+## Styling with Tailwind
+
+- Use `cn()` utility for conditional classes
+- Group classes: layout, spacing, colors, typography
+- Responsive prefixes: `sm:`, `md:`, `lg:`
+
+```tsx
+className={cn(
+  "px-4 py-2 rounded-md font-medium",
+  "bg-blue-600 hover:bg-blue-700",
+  variant === "outline" && "bg-transparent border-2"
+)}
+```
+
+## Hooks Best Practices
+
+- Keep hooks at component top level
+- Complete dependency arrays in useEffect
+- Cleanup subscriptions in useEffect
+- Custom hooks for reusable stateful logic
+
+## Accessibility Essentials
+
+- Semantic HTML: `button`, `nav`, `main`, `article`
+- `aria-label` for icon buttons
+- `alt` text for images
+- Keyboard navigation support
+
+## Testing
+
+- React Testing Library
+- `screen.getByRole()`, `screen.getByLabelText()`
+- Test user interactions, not implementation
+
+## Quick Checklist
+
+- [ ] Props interface defined and typed
+- [ ] Event handlers properly typed
+- [ ] Performance optimizations where needed
+- [ ] Accessibility attributes included
+- [ ] Tailwind classes organized
+
+## Anti-Patterns to Avoid
+
+- ❌ Using `any` for props or state
+- ❌ Creating functions/objects inside render
+- ❌ Missing useEffect dependency arrays
+- ❌ Using array index as key in lists
+- ❌ Mutating props or state directly
+- ❌ Forgetting loading/error states
