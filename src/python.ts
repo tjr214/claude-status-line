@@ -57,7 +57,24 @@ async function checkVirtualEnv(): Promise<PythonEnvInfo | null> {
   // Check VIRTUAL_ENV environment variable first (active environment)
   const virtualEnvPath = Deno.env.get("VIRTUAL_ENV");
   if (virtualEnvPath) {
-    const envName = virtualEnvPath.split("/").pop() || "venv";
+    // First try to get name from pyvenv.cfg prompt
+    const pyvenvConfig = join(virtualEnvPath, "pyvenv.cfg");
+    let envName = virtualEnvPath.split("/").pop() || "venv";
+    
+    if (existsSync(pyvenvConfig)) {
+      const config = await readFile(pyvenvConfig);
+      const promptMatch = config.match(/prompt\s*=\s*['"]?([^'"]+)['"]?/);
+      if (promptMatch && promptMatch[1]) {
+        envName = promptMatch[1];
+      } else {
+        // Use project directory name as fallback for active environments too
+        const parentDir = virtualEnvPath.split("/").slice(-2, -1)[0];
+        if (parentDir && parentDir !== "envs") {
+          envName = parentDir;
+        }
+      }
+    }
+    
     const pythonPath = join(virtualEnvPath, "bin", "python");
     const version = await getPythonVersion(pythonPath);
     if (version) {
@@ -77,17 +94,29 @@ async function checkVenvDirectory(
   if (existsSync(pyvenvConfig)) {
     const config = await readFile(pyvenvConfig);
     if (config) {
+      // Extract custom prompt name from pyvenv.cfg if available
+      const promptMatch = config.match(/prompt\s*=\s*['"]?([^'"]+)['"]?/);
+      let envName = venvDir;
+      
+      if (promptMatch && promptMatch[1]) {
+        envName = promptMatch[1];
+      } else {
+        // Use project directory name as fallback instead of venv method
+        const projectName = currentDir.split("/").pop() || venvDir;
+        envName = projectName;
+      }
+
       // Extract Python version from pyvenv.cfg
       const versionMatch = config.match(/version\s*=\s*(\d+\.\d+(?:\.\d+)?)/);
       if (versionMatch) {
-        return { name: venvDir, version: versionMatch[1] };
+        return { name: envName, version: versionMatch[1] };
       }
 
       // Fallback: try to get version from Python executable
       const pythonPath = join(venvPath, "bin", "python");
       const version = await getPythonVersion(pythonPath);
       if (version) {
-        return { name: venvDir, version };
+        return { name: envName, version };
       }
     }
   }

@@ -75,7 +75,7 @@ async function buildStatusLine(currency: string): Promise<void> {
 	// Get Python environment information and add to components.
 	const pythonInfo = await getPythonEnvInfo(currentDir);
 	if (pythonInfo) {
-		components.push(`🐍 ${pythonInfo.name} (py${pythonInfo.version})`);
+		components.push(`🐍 ${pythonInfo.name} (${pythonInfo.version})`);
 	}
 
 	// Join components with separator and output

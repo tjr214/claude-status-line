@@ -20,22 +20,26 @@ The tool reads JSON context data from Claude Code via stdin and transforms it in
 ## Key Features
 
 ### Multi-Currency Support
+
 - Automatic currency conversion from USD to specified currency (default: CAD)
 - Intelligent caching system (1-hour cache) for exchange rates
 - Graceful fallback to USD when conversion fails
 
 ### Git Integration
+
 - Automatic detection of git repositories
 - Current branch display
 - Robust error handling for non-git directories
 
 ### Performance & Reliability
+
 - Streaming input processing via stdin
 - Component-based architecture for modular display
 - Comprehensive error handling with graceful degradation
 - Efficient caching mechanisms
 
 ### Developer Experience
+
 - Clean, emoji-rich visual presentation
 - Configurable currency display
 - Zero-configuration git detection

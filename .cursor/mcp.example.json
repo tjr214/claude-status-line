@@ -1,22 +1,22 @@
 {
-	"mcpServers": {
-		"context7": {
-			"command": "npx",
-			"args": ["-y", "@upstash/context7-mcp@latest"]
-		},
-		"gemini-cli": {
-			"command": "npx",
-			"args": ["-y", "gemini-mcp-tool"]
-		},
-		"shadcn-ui": {
-			"command": "npx",
-			"args": ["@jpisnice/shadcn-ui-mcp-server"],
-			"env": {
-				"GITHUB_PERSONAL_ACCESS_TOKEN": "GITHUB_PERSONAL_ACCESS_TOKEN_HERE"
-			}
-		},
-		"Current Project Docs": {
-			"url": "https://gitmcp.io/{owner}/{repo}"
-		}
-	}
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "gemini-cli": {
+      "command": "npx",
+      "args": ["-y", "gemini-mcp-tool"]
+    },
+    "shadcn-ui": {
+      "command": "npx",
+      "args": ["@jpisnice/shadcn-ui-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "GITHUB_PERSONAL_ACCESS_TOKEN_HERE"
+      }
+    },
+    "Current Project Docs": {
+      "url": "https://gitmcp.io/{owner}/{repo}"
+    }
+  }
 }
