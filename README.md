@@ -1,12 +1,14 @@
 # Claude Code Status Line
 
-A TypeScript/Deno-based status line for Claude Code that displays project information, git branch, model details, session cost, and context token usage.
+A TypeScript/Deno-based status line for Claude Code that displays project information, git remote repository info, git branch, model details, session cost, and context token usage.
 
 ## Features
 
 - 🤖 **Model Display**: Shows the current Claude model being used (optional)
-- 📁 **Project Info**: Displays project name and current directory
+- 📁 **Project Info**: Displays project name when enabled with flag (optional)
+- 🔗 **Git Remote Repository**: Shows username/repository-name when connected to remote git repository
 - 🌿 **Git Integration**: Shows current git branch when in a repository
+- 📂 **Directory Display**: Falls back to current directory name when no git remote exists
 - 🐍 **Python Environment Detection**: Displays active virtual environments (only when activated via VIRTUAL_ENV)
 - 💰 **Session Cost**: Displays current session cost in selected currency
 - 📈 **Context Usage**: Shows context token percentage
@@ -20,7 +22,7 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5"
 	}
 }
 ```
@@ -36,7 +38,7 @@ Add the `--currency` flag to change the currency used for session cost display:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --currency USD"
 	}
 }
 ```
@@ -50,7 +52,19 @@ Add the `--display-model` flag to show the Claude model name in the status line:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --display-model"
+	}
+}
+```
+
+#### Project Name Display
+Add the `--display-project-name` flag to show the project name in the status line (only when project differs from current directory):
+
+```json
+{
+	"statusLine": {
+		"type": "command",
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --display-project-name"
 	}
 }
 ```
@@ -62,7 +76,7 @@ You can combine multiple options:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.4 --currency USD --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --currency USD --display-model --display-project-name"
 	}
 }
 ```
@@ -99,17 +113,32 @@ interface ClaudeContext {
 		project_dir: string;
 	};
 }
+
+interface GitRemoteInfo {
+	username: string;
+	repo: string;
+}
 ```
 
 It then builds a status line showing:
 
-- Project name (if different from current directory)
+- Project name with folder emoji (if enabled and different from current directory)
 - Model name with robot emoji (if enabled)
 - Session cost in desired currency (fetched from ccusage)
 - Context token usage percentage
-- Current directory with folder emoji
-- Git branch with branch emoji
-- Python environment name with snake emoji
+- Git remote repository info with link emoji (username/repo-name) OR current directory with folder emoji (fallback when no remote)
+- Git branch with branch emoji (if in repository)
+- Python environment name with snake emoji (if active environment detected)
+
+### Git Remote Repository Detection
+
+The status line automatically detects git remote repository information and displays it in preference to the directory name. It supports multiple URL formats:
+
+- **HTTPS**: `https://github.com/username/repo.git` → `🔗 username/repo`
+- **SSH**: `git@github.com:username/repo.git` → `🔗 username/repo`
+- **Git Protocol**: `git://github.com/username/repo.git` → `🔗 username/repo`
+
+When no git remote is configured, it falls back to showing the directory basename: `📂 directory-name`
 
 ### Python Environment Detection
 
@@ -133,19 +162,29 @@ The status line tracks your Claude usage by:
 
 ### Example Output
 
-#### Full Status Line (with all features enabled)
+#### Full Status Line (with all features enabled, git remote repository)
 ```
-📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 📂 src | 🌿 feature-branch | 🐍 venv
-```
-
-#### Minimal Status Line (model display disabled)
-```
-📁 my-project | 💰 $0.45 session | 📈 67% | 📂 src | 🌿 feature-branch | 🐍 poetry-env
+📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 🔗 username/repo-name | 🌿 feature-branch | 🐍 venv
 ```
 
-#### Without Python Environment
+#### Default Status Line (git remote repository detected)
 ```
-💰 $0.45 session | 📈 67% | 📂 claude-status-line | 🌿 main
+💰 $0.45 session | 📈 67% | 🔗 tjr214/claude-status-line | 🌿 main
+```
+
+#### Fallback to Directory Name (no git remote)
+```
+💰 $0.45 session | 📈 67% | 📂 local-directory | 🌿 main | 🐍 poetry-env
+```
+
+#### Non-Git Repository
+```
+💰 $0.45 session | 📈 67% | 📂 my-folder
+```
+
+#### With Project Name Flag and Model Display
+```
+📁 enterprise-app | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 🔗 company/backend-api | 🌿 develop
 ```
 
 ## Troubleshooting

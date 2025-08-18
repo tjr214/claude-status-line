@@ -10,3 +10,8 @@ export interface ClaudeContext {
     project_dir: string;
   };
 }
+
+export interface GitRemoteInfo {
+  username: string;
+  repo: string;
+}

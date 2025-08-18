@@ -16,6 +16,7 @@ import type { ClaudeContext } from "./types.ts";
 async function buildStatusLine(
   currency: string,
   displayModel: boolean,
+  displayProjectName: boolean,
 ): Promise<void> {
   // Disable logging from ccusage.
   logger.removeReporter();
@@ -43,8 +44,8 @@ async function buildStatusLine(
     projectName = `📁 ${basename(projectDir)}`;
   }
 
-  // Add project name if available
-  if (projectName) {
+  // Add project name if available and enabled
+  if (projectName && displayProjectName) {
     components.push(projectName);
   }
 
@@ -73,12 +74,19 @@ async function buildStatusLine(
     components.push(`📈 0%`);
   }
 
-  // Get just the directory name for cleaner display
-  const dirName = currentDir ? basename(currentDir) : "~";
-  components.push(`📂 ${dirName}`);
-
   // Get git information and add to components.
   const gitInfo = await getGitInfo(currentDir);
+  
+  // Display remote git info if available, otherwise show directory name
+  if (gitInfo?.remoteInfo) {
+    components.push(`🔗 ${gitInfo.remoteInfo.username}/${gitInfo.remoteInfo.repo}`);
+  } else {
+    // Get just the directory name for cleaner display
+    const dirName = currentDir ? basename(currentDir) : "~";
+    components.push(`📂 ${dirName}`);
+  }
+
+  // Add git branch if available
   if (gitInfo) {
     components.push(`🌿 ${gitInfo.branch}`);
   }
@@ -97,7 +105,7 @@ if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.4")
+      .version("0.1.5")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",
@@ -109,8 +117,11 @@ if (import.meta.main) {
       .option("-m, --display-model", "Display AI model name in status line", {
         default: false,
       })
+      .option("-p, --display-project-name", "Display project name in status line", {
+        default: false,
+      })
       .action(async (options) => {
-        await buildStatusLine(options.currency, options.displayModel);
+        await buildStatusLine(options.currency, options.displayModel, options.displayProjectName);
       })
       .parse(Deno.args);
   } catch (err) {
