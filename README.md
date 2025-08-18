@@ -17,10 +17,10 @@ Add this to your `.claude/settings.json`:
 
 ```json
 {
-  "statusLine": {
-    "type": "command",
-    "command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@wyattjoh/claude-status-line@0.1.0"
-  }
+	"statusLine": {
+		"type": "command",
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.1"
+	}
 }
 ```
 
@@ -30,10 +30,10 @@ You can customize the currency used for session cost display by adding the `--cu
 
 ```json
 {
-  "statusLine": {
-    "type": "command",
-    "command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@wyattjoh/claude-status-line@0.1.0 --currency USD"
-  }
+	"statusLine": {
+		"type": "command",
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.1 --currency USD"
+	}
 }
 ```
 
@@ -60,16 +60,16 @@ The status line receives Claude Code context as JSON through stdin:
 
 ```typescript
 interface ClaudeContext {
-  session_id: string;
-  transcript_path: string;
-  model: {
-    id: string;
-    display_name: string;
-  };
-  workspace: {
-    current_dir: string;
-    project_dir: string;
-  };
+	session_id: string;
+	transcript_path: string;
+	model: {
+		id: string;
+		display_name: string;
+	};
+	workspace: {
+		current_dir: string;
+		project_dir: string;
+	};
 }
 ```
 
