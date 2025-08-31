@@ -4,11 +4,34 @@ import { Buffer } from "node:buffer";
 import { logger } from "ccusage/logger";
 import { calculateContextTokens, loadSessionUsageById } from "ccusage/data-loader";
 import { Command } from "@cliffy/command";
+import { dim, rgb24 } from "jsr:@std/fmt/colors";
 
 import { formatCurrency } from "./currency.ts";
 import { getGitInfo } from "./git.ts";
 import { getPythonEnvInfo } from "./python.ts";
 import type { ClaudeContext } from "./types.ts";
+
+/**
+ * Format token percentage with color coding based on usage levels
+ */
+function formatTokenPercentage(percentage: number): string {
+	const displayStr = `${percentage}%`;
+
+	if (percentage >= 80) {
+		return dim(rgb24(displayStr, 0xff0000)); // Red
+	}
+	if (percentage >= 61) {
+		return dim(rgb24(displayStr, 0xff6600)); // Orange
+	}
+	if (percentage >= 46) {
+		return dim(rgb24(displayStr, 0xffff00)); // Yellow
+	}
+	if (percentage >= 1) {
+		return dim(rgb24(displayStr, 0x00ff00)); // Green
+	}
+	// For 0% or invalid inputs, return the default dimmed style
+	return dim(displayStr);
+}
 
 async function buildStatusLine(
 	currency: string,
@@ -54,9 +77,9 @@ async function buildStatusLine(
 	// Display context window usage percentage
 	const contextTokens = await calculateContextTokens(transcriptPath);
 	if (contextTokens) {
-		components.push(`📈 ${contextTokens.percentage}%`);
+		components.push(`📈 ${formatTokenPercentage(contextTokens.percentage)}`);
 	} else {
-		components.push(`📈 0%`);
+		components.push(`📈 ${formatTokenPercentage(0)}`);
 	}
 
 	// Load the session usage by ID and format the cost in the specified currency.
