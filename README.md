@@ -11,8 +11,20 @@ A TypeScript/Deno-based status line for Claude Code that displays project inform
 - 📂 **Directory Display**: Falls back to current directory name when no git remote exists
 - 🐍 **Python Environment Detection**: Displays active virtual environments (only when activated via VIRTUAL_ENV)
 - 💰 **Session Cost**: Displays current session cost in selected currency
-- 📈 **Context Usage**: Shows context token percentage
+- 📈 **Context Usage**: Shows context token percentage with color-coded visual indicators
 - 🎨 **Clean Icons**: Uses emojis for visual clarity
+
+### Color-Coded Context Usage
+
+The context usage percentage (📈) uses intelligent color coding to provide instant visual feedback about your token consumption:
+
+- 🟢 **Green (1-45%)**: Good usage - plenty of context remaining
+- 🟡 **Yellow (46-60%)**: Caution - approaching moderate usage  
+- 🟠 **Orange (61-79%)**: Warning - high usage, consider context management
+- 🔴 **Red (80%+)**: Critical - very high usage, context limit approaching
+- ⚪ **Default (0%)**: No context usage
+
+All colors are dimmed for subtle visual indication that won't distract from your work. The color coding uses RGB24 true colors for consistent display across different terminal themes.
 
 ## Installation
 
@@ -22,7 +34,7 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14"
 	}
 }
 ```
@@ -38,7 +50,7 @@ Add the `--currency` flag to change the currency used for session cost display:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --currency USD"
 	}
 }
 ```
@@ -52,7 +64,7 @@ Add the `--display-model` flag to show the Claude model name in the status line:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --display-model"
 	}
 }
 ```
@@ -64,7 +76,7 @@ Add the `--display-project-name` flag to show the project name in the status lin
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --display-project-name"
 	}
 }
 ```
@@ -76,7 +88,7 @@ You can combine multiple options:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5 --currency USD --display-model --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --currency USD --display-model --display-project-name"
 	}
 }
 ```
@@ -166,11 +178,13 @@ The status line tracks your Claude usage by:
 ```
 📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 🔗 username/repo-name | 🌿 feature-branch | 🐍 venv
 ```
+*Note: The `67%` would appear in orange color indicating high context usage.*
 
 #### Default Status Line (git remote repository detected)
 ```
 💰 $0.45 session | 📈 67% | 🔗 tjr214/claude-status-line | 🌿 main
 ```
+*Note: Context percentages are color-coded based on usage levels (green/yellow/orange/red).*
 
 #### Fallback to Directory Name (no git remote)
 ```
