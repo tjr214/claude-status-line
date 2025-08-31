@@ -84,12 +84,8 @@ async function buildStatusLine(
   const contextTokens = await calculateContextTokens(transcriptPath);
   if (contextTokens) {
     const colorCode = getContextPercentageColor(contextTokens.percentage);
-    if (colorCode) {
-      // Break out of dim, apply bright color, reset everything, go back to dim
-      components.push(`📈 \x1b[0m${colorCode}${contextTokens.percentage}%\x1b[0m\x1b[2m`);
-    } else {
-      components.push(`📈 ${contextTokens.percentage}%`);
-    }
+    const resetCode = colorCode ? "\x1b[2m" : ""; // reset back to dim mode
+    components.push(`📈 ${colorCode}${contextTokens.percentage}%${resetCode}`);
   } else {
     // 0% should appear dim (no special color)
     components.push(`📈 0%`);
@@ -128,7 +124,7 @@ if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.9")
+      .version("0.1.8")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",
