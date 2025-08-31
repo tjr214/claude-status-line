@@ -11,13 +11,13 @@ import { getPythonEnvInfo } from "./python.ts";
 import type { ClaudeContext } from "./types.ts";
 
 function getContextPercentageColor(percentage: number): string {
-	if (percentage >= 1 && percentage < 25) {
+	if (percentage >= 1 && percentage < 40) {
 		return "\x1b[32m"; // bright green
-	} else if (percentage >= 25 && percentage < 60) {
+	} else if (percentage >= 40 && percentage < 55) {
 		return "\x1b[33m"; // bright yellow
-	} else if (percentage >= 60 && percentage < 85) {
+	} else if (percentage >= 55 && percentage < 80) {
 		return "\x1b[38;5;208m"; // bright orange
-	} else if (percentage >= 85 && percentage <= 100) {
+	} else if (percentage >= 80 && percentage <= 100) {
 		return "\x1b[31m"; // bright red
 	}
 	// For 0% or any other case, return empty string (no color change)
@@ -113,14 +113,14 @@ async function buildStatusLine(
 	}
 
 	// Join components with separator and output with dim styling
-	console.log(`\x1b[2m${components.join(" | ")}\x1b[0m`);
+	process.stdout.write(`\x1b[2m${components.join(" | ")}\x1b[0m`);
 }
 
 if (import.meta.main) {
 	try {
 		await new Command()
 			.name("claude-status-line")
-			.version("0.1.10")
+			.version("0.1.11")
 			.description("A status line for Claude Code")
 			.option("-c, --currency <currency:string>", "Currency code for session cost display", {
 				default: "CAD",

@@ -1,7 +1,7 @@
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.9"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.10"
 	},
 	"performance": {
 		"maxContextSize": "100%",
