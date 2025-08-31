@@ -22,7 +22,7 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.7"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.8"
 	}
 }
 ```
@@ -39,7 +39,7 @@ Add the `--currency` flag to change the currency used for session cost display:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.7 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.8 --currency USD"
 	}
 }
 ```
@@ -54,7 +54,7 @@ Add the `--display-model` flag to show the Claude model name in the status line:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.7 --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.8 --display-model"
 	}
 }
 ```
@@ -67,7 +67,7 @@ Add the `--display-project-name` flag to show the project name in the status lin
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.7 --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.8 --display-project-name"
 	}
 }
 ```
@@ -80,7 +80,7 @@ You can combine multiple options:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.7 --currency USD --display-model --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.8 --currency USD --display-model --display-project-name"
 	}
 }
 ```
