@@ -14,16 +14,17 @@ import { getPythonEnvInfo } from "./python.ts";
 import type { ClaudeContext } from "./types.ts";
 
 function getContextPercentageColor(percentage: number): string {
-  if (percentage >= 1 && percentage <= 25) {
+  if (percentage >= 1 && percentage < 25) {
     return "\x1b[32m"; // green
-  } else if (percentage > 25 && percentage <= 60) {
+  } else if (percentage >= 25 && percentage < 60) {
     return "\x1b[33m"; // yellow
-  } else if (percentage > 60 && percentage < 85) {
+  } else if (percentage >= 60 && percentage < 85) {
     return "\x1b[38;5;208m"; // orange
   } else if (percentage >= 85 && percentage <= 100) {
     return "\x1b[31m"; // red
   }
-  return "\x1b[0m"; // default/reset
+  // For 0% or any other case, return empty string (no color change)
+  return "";
 }
 
 async function buildStatusLine(
@@ -83,12 +84,11 @@ async function buildStatusLine(
   const contextTokens = await calculateContextTokens(transcriptPath);
   if (contextTokens) {
     const colorCode = getContextPercentageColor(contextTokens.percentage);
-    const resetCode = "\x1b[0m";
+    const resetCode = colorCode ? "\x1b[0m" : "";
     components.push(`📈 ${colorCode}${contextTokens.percentage}%${resetCode}`);
   } else {
-    const colorCode = getContextPercentageColor(0);
-    const resetCode = "\x1b[0m";
-    components.push(`📈 ${colorCode}0%${resetCode}`);
+    // 0% should appear dim (no special color)
+    components.push(`📈 0%`);
   }
 
   // Get git information and add to components.
@@ -124,7 +124,7 @@ if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.6")
+      .version("0.1.7")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",
