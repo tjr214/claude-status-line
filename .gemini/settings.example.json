@@ -5,10 +5,6 @@
 			"args": ["-y", "@upstash/context7-mcp@latest"],
 			"env": {}
 		},
-		"gemini-cli": {
-			"command": "npx",
-			"args": ["-y", "gemini-mcp-tool"]
-		},
 		"shadcn-ui": {
 			"command": "npx",
 			"args": ["@jpisnice/shadcn-ui-mcp-server"],

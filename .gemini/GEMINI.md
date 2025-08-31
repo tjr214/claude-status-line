@@ -6,18 +6,13 @@ This document defines your core instructions as part of that Team. **IMPORTANT:*
 
 ## **1. Core Directives (Always Active)**
 
-- **1.1. Maintain Changelog:** You are required to read and maintain the `dev-journal/CHANGELOG.md` file.
-
-  - If `dev-journal/CHANGELOG.md` does not exist, you must create it.
-  - Update it with a summary of any changes you make.
-
-- **1.2. Principle of Proactive Clarification:** Before starting any new task, you must ensure we are aligned.
+- **1.1. Principle of Proactive Clarification:** Before starting any new task, you must ensure we are aligned.
 
   - Review the request and the existing codebase.
   - **CRITICAL:** Ask clarifying questions to resolve any ambiguity.
   - **IMPORTANT: Never assume intent.** It is always better to ask than to proceed with an incorrect assumption.
 
-- **1.3. Principle of Authorized Action:** You are forbidden from making changes or adding features without explicit user authorization.
+- **1.2. Principle of Authorized Action:** You are forbidden from making changes or adding features without explicit user authorization.
   - **IMNPORTANT: Mandatory Acknowledgment:** Before implementing an approved task, you must ensure your response begins with the following statement: _"I will operate only within the authorized scope of this task."_
 
 ## **2. Library & Dependency Protocol**
@@ -48,7 +43,7 @@ This document defines everything you need to know about the project we are curre
 
 ## **QUICK NOTE ABOUT FILES TO IGNORE!**
 
-You can safely ignore any and all files in the `.cursor` directory. Also do not read or write to the `dev-journal/plan_from_gemini.md` file UNLESS SPECIFICALLY ASKED TO. They are not relevant to this project and are only used for internal purposes. In fact, reading them or including them in any way may screw up the project. So just don't do it!
+You can safely ignore any and all files in the `.cursor` and `.claude` directories. They are not relevant to this project and are only used for internal purposes. In fact, reading them or including them in any way may screw up the project. So just don't do it!
 
 ## **1. Establish Project Context (Always Refer To This)**
 
@@ -57,12 +52,12 @@ This is a project ruleset for our latest creation. The user will provide project
 - **1.1. Project Description:** Locate the user's project description below. This defines the project's purpose.
   ```
   **Import our brief project description, treat as if import is in the main CLAUDE.md file.**
-  @dev-journal/PROJECT-DESCRIPTION.md
+  @../dev-journal/PROJECT-DESCRIPTION.md
   ```
 - **1.2. Technology Stack:** Locate the user's technology stack information below. This defines the tools, languages, and frameworks for the project.
   ```
   **Import our tech stack discussion, treat as if import is in the main CLAUDE.md file.**
-  @dev-journal/TECH-STACK.md
+  @../dev-journal/TECH-STACK.md
   ```
 
 ## **2. The Product Requirements Document (PRD)**
@@ -74,83 +69,10 @@ If the PRD is not provided, just let the user know that you don't have one and a
 - **2.1. PRD Data:** Locate the project's PRD overview below. This defines the product requirements for the project.
   ```
   **Import our ever-evolving PRD, treat as if import is in the main CLAUDE.md file.**
-  @dev-journal/PRD-MINI.md
+  @../dev-journal/PRD-MINI.md
   ```
 
 **IMPORTANT:** the full, complete and comprehensive PRD can be found at `dev-journal/PRD-FULL.md`.
-
----
-
-# `git` Workflow Ruleset
-
-This ruleset is triggered any time I am instructed to commit code.
-
-## **Phase 1: Analysis & Synthesis**
-
-Before executing any `git` commands, I will perform a comprehensive review of the current state of the project and our recent work.
-
-1.  **Review Code Changes:** I will analyze the output of `git diff` (for unstaged changes) and `git diff --staged` (for staged changes) to understand the specific modifications to the codebase.
-2.  **Review Conversation History:** I will re-read our recent conversation to establish the _intent_ and _context_ behind these changes. What problem were we trying to solve? What feature were we adding? What was the reasoning for the chosen solution?
-
-## **Phase 2: Content Generation**
-
-Using the information from Phase 1, I will generate three key pieces of content.
-
-1.  **The `git-checkpoint` File:**
-
-    - I will synthesize the analysis into a human-readable, descriptive paragraph.
-    - This paragraph will summarize the work just completed, acting as a "Previously, on this project..." memo for our future selves.
-    - I will then execute the command to **create or modify** the file `git-checkpoint` in the project's root directory with this content. You may need to specify the full path to the file (just like with any other file). IMPORTANT: _READ_ the `git-checkpoint` file before attempting to Write to it!
-    - I will use my WriteFile tool to accomplish this.
-    - Remember to perform a `git add .` after writing the file or it will not be committed!
-
-2.  **The `dev-journal/CHANGELOG.md` File:**
-
-    - Also update the running CHANGELOG to include similar content and notes. This way we have a record of what has been done.
-    - I will use my WriteFile tool to accomplish this task,
-    - IMPORTANT: _READ_ the `dev-journal/CHANGELOG.md` file before attempting to Write to it!
-    - Remember to perform a `git add .` after writing the file or it will not be committed!
-    - Use this as a template to guide you in writing the Changelog entries:
-
-    ```markdown
-    # CHANGELOG
-
-    ## ENTRY 2: Another Clickbait-sounding Title of Changes
-
-    A summary and overview of our works, together, this Current Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry should have a Clickbait-sounding title just to keep things interesting. You are allowed to use level 3 and level 4 headings. You do not usually have access to the current datetime so do NOT fabricate or invent dates in this log. Most of what we will put in this log will be similar to what we would put in the `git-checkpoint` file.
-
-    ## ENTRY 1: Clickbait-sounding Title of Changes
-
-    The summary and overview of the work we did together in a Previous Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry will have a Clickbait-sounding title just to keep things interesting. It would not be uncommon to see level 3 and level 4 headings here. **Notice there are no datetimes listed in this log.**
-    ```
-
-3.  **The Commit Message:**
-    - I will formulate a concise and conventional commit message.
-    - **Subject Line:** A short, imperative summary (max 50 characters), prefixed with a type (e.g., `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`).
-    - **Body (Optional):** A more detailed explanation of the "why" and "what," separated from the subject by a blank line. This will often be a more condensed version of the `git-checkpoint` content.
-
-## **Phase 3: Execution - The Commit**
-
-Once the content is prepared, I will execute the following sequence of commands:
-
-1.  **Stage all relevant changes:** This includes the modified project files and the newly created/overwritten `git-checkpoint` file.
-
-    - **Command:** `git add .` (or a more specific list of files, always including `./git-checkpoint`)
-
-2.  **Commit the staged changes:** I will use the multi-line commit message generated in the previous phase.
-
-    - **Command:** `git commit -m "Subject: The short summary" -m "Body: The longer explanation of the changes."`
-
-3.  **Report Completion:** I will inform you that the commit has been successfully created, and I will show you the commit hash for reference.
-
-## **Phase 4: Post-Commit - The Push Confirmation**
-
-After a successful commit, I will **stop and ask for your explicit permission** before interacting with the remote repository.
-
-1.  **I will ask:** "The changes have been committed. **Shall I push them to the remote repository?**"
-2.  **I will wait for your confirmation.** I will only proceed if you respond with a clear affirmative (e.g., "yes", "please push", "go ahead", "push it").
-3.  **If confirmed:** I will execute `git push`.
-4.  **If denied or ignored:** I will do nothing further and await your next instruction.
 
 ---
 
@@ -472,25 +394,11 @@ className={cn(
 
 - `tests/python`
 - `tests/python/cli` -- tests for Python CLI and `textual` TUI apps and tools
-- `tests/python/backend` -- tests for FastAPI backend code; other backend code written in Python
+- `tests/python/backend` -- tests for FastAPI backend code, python libs, other "backend"-type test code written in Python
 
 **Typescript Test Directories:**
 
 - `tests/typescript`
 - `tests/typescript/cli` -- tests for Typescript-based CLI and `Ink`-based TUI apps and tools
-- `tests/typescript/backend` -- tests for backend code written in Typescript
+- `tests/typescript/backend` -- tests for backend code written in Typescript, libraries written in Typescript or Javascript
 - `tests/typescript/frontend` -- tests for frontend code and TSX components and widgets
-
----
-
-# The Comprehensive Plan File (`OUR-PLAN.md`)
-
-**IMPORTANT:** the Comprehensive Plan file can be found at `dev-journal/OUR-PLAN.md`. It is an ever-evolving and changing LIVING document that the whole Team (you, included) follows and updates as we work on the project. When we are working with The Plan, we will sync the items in the Plan with the internal todo system via the `TodoWrite` tool. This will be explained in a bit more detail when we are actively engaged with the Comprehensive Plan.
-
----
-
-# Instructions from Original claude-status-line Repository
-
-**Import these instructions from the original `claude-status-line` repo, treat as if import is in the main CLAUDE.md file.**
-
-@CLAUDE.ogproject.md

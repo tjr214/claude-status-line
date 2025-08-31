@@ -29,6 +29,29 @@ execute_command() {
     fi
 }
 
+# Get version function
+get_version() {
+    local cmd="$1"
+    local version_output
+    version_output=$($cmd 2>/dev/null || echo "Not installed")
+    echo "$version_output"
+}
+
+# Display version change
+show_version_change() {
+    local tool_name="$1"
+    local old_version="$2"
+    local new_version="$3"
+    
+    if [[ "$old_version" == "Not installed" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${new_version} (newly installed)${NC}"
+    elif [[ "$old_version" != "$new_version" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${old_version} → ${new_version}${NC}"
+    else
+        echo -e "${MAGENTA}📊 ${tool_name} version: ${BOLD}${new_version} (no change)${NC}"
+    fi
+}
+
 # Check if npm is installed
 echo -e "${CYAN}🔍 Checking for npm installation...${NC}"
 if ! command -v npm &> /dev/null; then
@@ -37,6 +60,9 @@ fi
 
 # Install gemini-cli
 echo -e "${CYAN}📦 Installing gemini-cli...${NC}"
+
+# Capture current version before update
+old_version=$(get_version "gemini --version")
 
 # Check if gemini-cli is already installed
 if command -v gemini &> /dev/null; then
@@ -48,7 +74,10 @@ fi
 # Install/update gemini globally
 execute_command "npm install -g @google/gemini-cli@latest" "Failed to install gemini. Please check your npm installation and try again."
 
-# Display gemini version
-echo -e "${MAGENTA}📊 gemini version: ${BOLD}$(gemini --version 2>/dev/null || echo 'Unable to determine version')${NC}"
+# Capture new version after update
+new_version=$(get_version "gemini --version")
+
+# Display version change
+show_version_change "Gemini CLI" "$old_version" "$new_version"
 
 echo -e "${GREEN}${BOLD}✨ All done! gemini has been installed successfully.${NC}" 

@@ -1,0 +1,12 @@
+- **python-backend-expert-planner:** FastAPI, database operations, authentication, middleware, background tasks, testing, security implementations
+- **nextjs-frontend-expert-planner:** TypeScript/TSX files, React components, Shadcn UI, frontend features, debugging frontend issues, API integration
+- **python-cli-tui-expert-planner:** Python CLI tools, textual TUI apps, Rich library usage, CLI argument parsing
+- **typescript-cli-tui-expert-planner:** TypeScript CLI tools, Ink-based TUI apps, interactive terminal applications
+- **bash-scripting-expert-planner:** System automation, interactive scripts, TUI-based shell applications
+- **mathematics-expert-planner:** Mathematical calculations, algorithms and their optimization, statistical problems, mathematical modeling
+- **apple-mlx-expert-planner:** Apple MLX/MLX-LM development, deep learning on Apple Silicon, custom neural architectures, model optimization, language model inference
+- **huggingface-expert-planner:** Huggingface ecosystem expertise including transformers, datasets, TRL, PEFT, training, fine-tuning, inference, Hub operations, CLI utilities
+- **pytorch-expert-planner:** PyTorch ecosystem expertise including neural network design, model training/optimization, data pipelines, deployment, performance analysis, research implementations
+- **unsloth-expert-planner:** Unsloth library mastery for ultra-fast AI training and inference, including pre-training, SFT, RL with GRPO, LoRA/QLoRA, quantized training, custom extensions, and performance optimization
+- **sql-expert-planner:** Database design, SQL query optimization, schema creation, indexing strategies, database administration, security implementations, migrations, performance tuning across PostgreSQL, MySQL, SQLite, SQL Server, Oracle
+- **git-commit-philosopher:** Professional commits with detailed analysis and philosophical observations

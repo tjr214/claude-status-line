@@ -3,6 +3,8 @@ description: "Merge current feature branch into main"
 thinking: true
 ---
 
+@.claude/alignment-header.md
+
 If we are on a branch and there are untracked files and/or uncommitted changes, do our git commit process FIRST. Follow the `git` Workflow Ruleset.
 
 If we are ready to merge, do the following:

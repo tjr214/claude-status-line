@@ -29,19 +29,45 @@ execute_command() {
     fi
 }
 
+# Get version function
+get_version() {
+    local cmd="$1"
+    local version_output
+    version_output=$($cmd 2>/dev/null || echo "Not installed")
+    echo "$version_output"
+}
+
+# Display version change
+show_version_change() {
+    local tool_name="$1"
+    local old_version="$2"
+    local new_version="$3"
+    
+    if [[ "$old_version" == "Not installed" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${new_version} (newly installed)${NC}"
+    elif [[ "$old_version" != "$new_version" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${old_version} → ${new_version}${NC}"
+    else
+        echo -e "${MAGENTA}📊 ${tool_name} version: ${BOLD}${new_version} (no change)${NC}"
+    fi
+}
+
 # Detect Python package management approach
 echo -e "${CYAN}🔍 Detecting Python package management approach...${NC}"
 
 # Check for uv first (fastest and modern)
 if command -v uv &> /dev/null; then
-    echo -e "${MAGENTA}📊 Found uv: ${BOLD}$(uv --version)${NC}"
+    uv_version=$(get_version "uv --version")
+    echo -e "${MAGENTA}📊 Found uv: ${BOLD}${uv_version}${NC}"
     
     if [ -f "pyproject.toml" ]; then
         echo -e "${CYAN}📦 Updating Python packages with uv (pyproject.toml)...${NC}"
         execute_command "uv sync --upgrade" "Failed to update Python packages with uv. Please check your project configuration and try again."
+        echo -e "${GREEN}✅ Python packages updated with uv${NC}"
     elif [ -f "requirements.txt" ]; then
         echo -e "${CYAN}📦 Updating Python packages with uv (requirements.txt)...${NC}"
         execute_command "uv pip install -U -r requirements.txt" "Failed to update Python packages with uv. Please check your project configuration and try again."
+        echo -e "${GREEN}✅ Python packages updated with uv${NC}"
     else
         handle_error "No pyproject.toml or requirements.txt found. Please ensure you have Python dependencies defined."
     fi
@@ -53,9 +79,11 @@ elif [ -f "pyproject.toml" ]; then
         handle_error "pip is not installed. Please install pip first to continue."
     fi
     
-    echo -e "${MAGENTA}📊 pip version: ${BOLD}$(pip --version)${NC}"
+    pip_version=$(get_version "pip --version")
+    echo -e "${MAGENTA}📊 pip version: ${BOLD}${pip_version}${NC}"
     echo -e "${CYAN}📦 Updating Python packages with pip (pyproject.toml)...${NC}"
     execute_command "pip install -U -e ." "Failed to update Python packages from pyproject.toml. Please check your project configuration and try again."
+    echo -e "${GREEN}✅ Python packages updated with pip${NC}"
 
 # Fallback to requirements.txt with pip
 elif [ -f "requirements.txt" ]; then
@@ -64,9 +92,11 @@ elif [ -f "requirements.txt" ]; then
         handle_error "pip is not installed. Please install pip first to continue."
     fi
     
-    echo -e "${MAGENTA}📊 pip version: ${BOLD}$(pip --version)${NC}"
+    pip_version=$(get_version "pip --version")
+    echo -e "${MAGENTA}📊 pip version: ${BOLD}${pip_version}${NC}"
     echo -e "${CYAN}📦 Updating Python packages with pip (requirements.txt)...${NC}"
     execute_command "pip install -U -r requirements.txt" "Failed to update Python packages. Please check your project configuration and try again."
+    echo -e "${GREEN}✅ Python packages updated with pip${NC}"
 
 else
     handle_error "No Python dependency files found (pyproject.toml or requirements.txt). Please run this script from your project root with proper Python configuration."

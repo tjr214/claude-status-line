@@ -4,6 +4,8 @@ argument-hint: "[Brief description of the work to be done]"
 thinking: true
 ---
 
+@.claude/alignment-header.md
+
 ## **1. Instructions**
 
 $ARGUMENTS
@@ -14,9 +16,9 @@ Here is a comprehensive Plan to follow for success:
 @dev-journal/plan_from_gemini.md
 ```
 
-**IMPORTANT:** Sync the items from the Plan with your internal TODO system (using `TodoWrite`). Make appropriate use of available Agents.
+**IMPORTANT:** Sync the tasks and sub-tasks from the Plan with your internal TODO system (using `TodoWrite`). As the Main Agent, you will write all the code. Consult with expert sub-agents for domain-specific guidance and insights when needed.
 
-**Always** verify and understand the files, classes, etc. from our codebase that are referenced in the Plan, when you get to the section of the Plan we are working on.
+**CRITICAL:** **Always verify and understand the files, classes, etc. from our codebase** that are referenced in the Plan, when you get to the section of the Plan we are working on.
 
 When you are done, report back in to ensure you have followed the Plan and deleted the `dev-journal/plan_from_gemini.md` file.
 
@@ -26,6 +28,6 @@ When you are done, report back in to ensure you have followed the Plan and delet
 
 - [ ] Read the comprehensive Plan located at `dev-journal/plan_from_gemini.md`.
   - [ ] Verify and understand the files, classes, etc. from our codebase that are referenced in the Plan at the appropriate time.
-- [ ] Sync the items from the Plan with your internal TODO system (using `TodoWrite`).
-- [ ] Do the Work, making appropriate use of available Agents (tell the Agent where in the Plan we are working from; and that the plan is located at `dev-journal/plan_from_gemini.md`).
+- [ ] Sync the items and sub-items from the Plan with your internal TODO system (using `TodoWrite`).
+- [ ] Do the Work as the Main Agent (you write all code). Consult with expert sub-agents for domain-specific guidance when needed (tell them where in the Plan we are working from; and that the plan is located at `dev-journal/plan_from_gemini.md`).
 - [ ] When you are done, report back in to ensure you have followed the Plan and then delete the `dev-journal/plan_from_gemini.md` file.

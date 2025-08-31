@@ -39,12 +39,14 @@ display_usage() {
     echo -e "${YELLOW}Available package types:${NC}"
     echo -e "  ${GREEN}base${NC}         - REQ: Update all npm-based MCP tools, CLI apps, and needed packages"
     echo -e "  ${GREEN}repo${NC}         - OPTIONAL: Update this repository with the latest upgrades to the Template"
+    echo -e "  ${GREEN}all${NC}          - Update everything: the repo, the base requirements, the NPM and Python packages"
     echo -e "  ${GREEN}npm${NC}          - Update npm packages using pnpm"
     echo -e "  ${GREEN}python${NC}       - Update Python packages using pip"
-    # echo -e "  ${GREEN}taskmaster${NC}   - Update Task Master CLI tool"
     echo -e "  ${GREEN}repomix${NC}      - Update Repomix CLI tool"
     echo -e "  ${GREEN}gemini${NC}       - Update Gemini CLI tool"
     echo -e "  ${GREEN}claude${NC}       - Update Claude Code CLI tool"
+    echo -e "  ${GREEN}ccm${NC}          - Update Claude Code Monitor CLI tool"
+    echo -e "  ${GREEN}hello${NC}        - Run the 'dramatic hello world' script"
     echo
     echo -e "${YELLOW}Example:${NC}"
     echo -e "  ${BOLD}./update_packages.sh npm${NC}"
@@ -70,9 +72,6 @@ update_packages() {
         "python")
             script_path="scripts/update_scripts/update_python_packages.sh"
             ;;
-        "taskmaster")
-            script_path="scripts/update_scripts/update_task_master.sh"
-            ;;
         "repomix")
             script_path="scripts/update_scripts/update_repomix.sh"
             ;;
@@ -82,6 +81,13 @@ update_packages() {
         "claude")
             script_path="scripts/update_scripts/update_claude_code.sh"
             ;;
+        "ccm")
+            script_path="scripts/update_scripts/update_claude_code_monitor.sh"
+            ;;
+        "hello")
+            execute_command "python scripts/dramatic_hello.py" "Failed to run the 'dramatic hello world' script."
+            return
+            ;;
         "all")
             echo -e "\n"
             echo -e "${MAGENTA}${BOLD}Updating AI features from Template and updating base requirements...${NC}"
@@ -90,7 +96,7 @@ update_packages() {
             execute_command "./update_packages.sh base" "Failed to update base requirements."
 
             # Check if this is a Python project and update Python packages if needed
-            if [ -f ".i_use_python" ]; then
+            if [ -f "dev-journal/.i_use_python" ]; then
                 # echo -e "\n"
                 # echo -e "${CYAN}${BOLD}--------------------------------${NC}"
                 # echo -e "\n"
@@ -98,6 +104,16 @@ update_packages() {
                 execute_command "uv self update" "Failed to update uv."
                 execute_command "./update_packages.sh python" "Failed to update Python packages."
             fi
+
+            # Check if this is a Node.js project and update Node.js packages if needed
+            if [ -f "package.json" ] || [ -f "yarn.lock" ] || [ -f "pnpm-lock.yaml" ] || [ -f "bun.lockb" ] || [ -f "node_modules" -a -d "node_modules" ]; then
+                # echo -e "\n"
+                # echo -e "${CYAN}${BOLD}--------------------------------${NC}"
+                # echo -e "\n"
+                # echo -e "${MAGENTA}${BOLD}🚀 Running Node.js packages update script...${NC}"
+                execute_command "./update_packages.sh npm" "Failed to update Node.js packages."
+            fi
+
             return
             ;;
         "repo")
@@ -146,10 +162,10 @@ update_packages() {
             echo -e "\n"
             echo -e "${CYAN}${BOLD}--------------------------------${NC}"
             echo -e "\n"
-            
-            # If successful, run npm update
-            echo -e "${MAGENTA}${BOLD}🚀 Running npm update script...${NC}"
-            execute_command "./scripts/update_scripts/update_npm_packages.sh" "Failed to execute the npm update script."
+
+            # If successful, run claude-monitor update
+            echo -e "${MAGENTA}${BOLD}🚀 Running Claude Code Monitor update script...${NC}"
+            execute_command "./scripts/update_scripts/update_claude_code_monitor.sh" "Failed to execute the Claude Code Monitor update script."
 
             echo -e "\n"
             echo -e "${CYAN}${BOLD}--------------------------------${NC}"
@@ -160,7 +176,7 @@ update_packages() {
             ;;
         *)
             display_usage
-            handle_error "Invalid package type: ${package_type}. Please use 'npm', 'python', 'repomix', 'gemini', 'claude', 'repo', or 'base'."
+            handle_error "Invalid package type: ${package_type}. Please use 'base', 'repo', 'all', 'npm', 'python', 'repomix', 'gemini', 'claude', or 'hello'."
             ;;
     esac
     

@@ -52,32 +52,32 @@ show_version_change() {
     fi
 }
 
-# Check if npm is installed
-echo -e "${CYAN}🔍 Checking for npm installation...${NC}"
-if ! command -v npm &> /dev/null; then
-    handle_error "npm is not installed. Please install npm first to continue."
+# Check if uv is installed
+echo -e "${CYAN}🔍 Checking for uv installation...${NC}"
+if ! command -v uv &> /dev/null; then
+    handle_error "uv is not installed. Please install uv first to continue."
 fi
 
-# Install claude-code
-echo -e "${CYAN}📦 Installing Claude Code...${NC}"
+# Install claude-monitor
+echo -e "${CYAN}📦 Installing Claude Code Monitor...${NC}"
 
 # Capture current version before update
-old_version=$(get_version "claude --version")
+old_version=$(get_version "claude-monitor --version")
 
-# Check if claude-code is already installed
-if command -v claude &> /dev/null; then
-    echo -e "${YELLOW}🔄 Claude Code is already installed. Updating to latest version...${NC}"
+# Check if claude-monitor is already installed
+if command -v claude-monitor &> /dev/null; then
+    echo -e "${YELLOW}🔄 Claude Code Monitor is already installed. Updating to latest version...${NC}"
 else
-    echo -e "${YELLOW}🚀 Installing Claude Code...${NC}"
+    echo -e "${YELLOW}🚀 Installing Claude Code Monitor...${NC}"
 fi
 
-# Install/update claude-code globally
-execute_command "npm install -g @anthropic-ai/claude-code@latest" "Failed to install claude-code. Please check your npm installation and try again."
+# Install/update claude-monitor via uv
+execute_command "uv tool install claude-monitor" "Failed to install claude-monitor. Please check your uv installation and try again."
 
 # Capture new version after update
-new_version=$(get_version "claude --version")
+new_version=$(get_version "claude-monitor --version")
 
 # Display version change
-show_version_change "Claude Code" "$old_version" "$new_version"
+show_version_change "Claude Code Monitor" "$old_version" "$new_version"
 
-echo -e "${GREEN}${BOLD}✨ All done! Claude Code has been installed successfully.${NC}" 
+echo -e "${GREEN}${BOLD}✨ All done! Claude Code Monitor has been installed successfully.${NC}" 

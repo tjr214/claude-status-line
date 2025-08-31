@@ -4,6 +4,8 @@ argument-hint: "[name of the new branch]"
 thinking: true
 ---
 
+@.claude/alignment-header.md
+
 If we are on a branch or on `main` and there are untracked files and/or uncommitted changes, do our git commit process FIRST. Follow the `git` Workflow Ruleset.
 
 If we are ready to create the new feature branch, do the following:

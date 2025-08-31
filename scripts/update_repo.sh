@@ -18,6 +18,41 @@ SUCCESSFUL_ITEMS=()
 FAILED_ITEMS=()
 SKIPPED_ITEMS=()
 
+# Function to validate path confinement within project boundaries
+validate_path_confinement() {
+    local target_path="$1"
+    local base_path="$2"
+
+    # Get absolute paths to prevent relative path issues
+    local abs_target
+    local abs_base
+
+    # Handle non-existent paths safely
+    if [ -e "$target_path" ]; then
+        abs_target=$(realpath "$target_path")
+    else
+        # For non-existent paths, resolve parent directory
+        local parent_dir=$(dirname "$target_path")
+        if [ -e "$parent_dir" ]; then
+            abs_target="$(realpath "$parent_dir")/$(basename "$target_path")"
+        else
+            print_status "error" "Path validation failed: parent directory does not exist"
+            return 1
+        fi
+    fi
+
+    abs_base=$(realpath "$base_path")
+
+    # Check if target path is within base path
+    case "$abs_target" in
+        "$abs_base"*)
+            return 0 ;;
+        *)
+            print_status "error" "Security violation: path '$target_path' is outside project directory"
+            return 1 ;;
+    esac
+}
+
 # Function to print colored messages
 print_status() {
     local status="$1"
@@ -75,6 +110,21 @@ safe_copy() {
     local dest="$2"
     local item_name="$3"
     local emoji=$(get_file_emoji "$item_name")
+
+    # Validate paths are within project boundaries
+    if ! validate_path_confinement "$source" "$CURRENT_REPO_ROOT"; then
+        print_status "error" "$emoji $item_name - Source path validation failed"
+        FAILED_ITEMS+=("$item_name")
+        ((FAILED_COUNT++))
+        return 1
+    fi
+
+    if ! validate_path_confinement "$dest" "$CURRENT_REPO_ROOT"; then
+        print_status "error" "$emoji $item_name - Destination path validation failed"
+        FAILED_ITEMS+=("$item_name")
+        ((FAILED_COUNT++))
+        return 1
+    fi
     
     if [ ! -e "$source" ]; then
         print_status "error" "$emoji $item_name - Source not found"
@@ -140,18 +190,18 @@ safe_copy ".mcp.example.json" "../" ".mcp.example.json"
 safe_copy ".mcp.json" "../" ".mcp.json"
 
 # Copy ignore files
+# safe_copy ".gitignore" "../" ".gitignore"
 safe_copy ".repomixignore" "../" ".repomixignore"
-safe_copy ".gitignore" "../" ".gitignore"
 safe_copy ".cursorignore" "../" ".cursorignore"
 
 # Copy Python files
-safe_copy "dramatic_hello.py" "../" "dramatic_hello.py"
+safe_copy ".python-version" "../" ".python-version"
+safe_copy "scripts/dramatic_hello.py" "../scripts" "dramatic_hello.py"
 
 # Copy shell scripts
 safe_copy "update_packages.sh" "../" "update_packages.sh"
 
-# Copy documentation
-safe_copy "GEMINI.md" "../" "GEMINI.md"
+# Copy CLAUDE.md global rules file
 safe_copy "CLAUDE.md" "../" "CLAUDE.md"
 
 # Check if dev-journal directory exists, if not, copy it in
@@ -166,10 +216,15 @@ fi
 
 # Cleanup the template repository
 cd "$CURRENT_REPO_ROOT"
-if rm -rf "$TEMPLATE_REPO_ROOT" 2>/dev/null; then
-    print_status "success" "🗑️  Template directory cleaned up"
+# Validate template directory before cleanup
+if validate_path_confinement "$TEMPLATE_REPO_ROOT" "$CURRENT_REPO_ROOT"; then
+    if rm -rf "$TEMPLATE_REPO_ROOT" 2>/dev/null; then
+        print_status "success" "🗑️  Template directory cleaned up"
+    else
+        print_status "warning" "🗑️  Could not remove template directory"
+    fi
 else
-    print_status "warning" "🗑️  Could not remove template directory"
+    print_status "error" "🗑️  Template directory validation failed - cleanup skipped"
 fi
 
 # Print summary

@@ -10,26 +10,21 @@ This ruleset is triggered any time I am instructed to commit code.
 
 ## **Phase 1: Analysis & Synthesis**
 
-Before executing any `git` commands, I will perform a comprehensive review of the current state of the project and our recent work.
+Before executing any `git` commands, I will perform a comprehensive review of the current state of the project and our recent work. I will also use `date` to get the current date and time for an accurate log.
 
 1.  **Review Code Changes:** I will analyze the output of `git diff` (for unstaged changes) and `git diff --staged` (for staged changes) to understand the specific modifications to the codebase.
 2.  **Review Conversation History:** I will re-read our recent conversation to establish the _intent_ and _context_ behind these changes. What problem were we trying to solve? What feature were we adding? What was the reasoning for the chosen solution?
+3.  **Get Date and Time Information** I will run the command line tool `date` to retrieve the current date and time from the local system.
 
 ## **Phase 2: Content Generation**
 
-Using the information from Phase 1, I will generate three key pieces of content.
+Using the information from Phase 1, I will generate two key pieces of content.
 
-1.  **The `git-checkpoint` File:**
+1.  **The `dev-journal/CHANGELOG.md` File:**
 
-    - I will synthesize the analysis into a human-readable, descriptive paragraph.
-    - This paragraph will summarize the work just completed, acting as a "Previously, on this project..." memo for our future selves.
-    - I will then execute the command to **create or modify** the file `git-checkpoint` in the project's root directory with this content. You may need to specify the full path to the file (just like with any other file). IMPORTANT: _READ_ the `git-checkpoint` file before attempting to Write to it!
-    - I will use my WriteFile tool to accomplish this.
-    - Remember to perform a `git add .` after writing the file or it will not be committed!
-
-2.  **The `dev-journal/CHANGELOG.md` File:**
-
-    - Also update the running CHANGELOG to include similar content and notes. This way we have a record of what has been done.
+    - I will synthesize the analysis into a human-readable descriptive "mini-report" containing several short paragraphs and bullet-point information.
+    - This mini-report will act as a summary of our recently completed work. It also contains any expert philosophically-themed commentary and notes on the changes and the project's evolving (or devolving) direction in general. The `git-commit-philosopher` will know what to do.
+    - I will then execute the command to update the running CHANGELOG to include the mini-report. This way our project has a professional-quality 'Previously On...' that we can refer back to.
     - I will use my WriteFile tool to accomplish this task,
     - IMPORTANT: _READ_ the `dev-journal/CHANGELOG.md` file before attempting to Write to it!
     - Remember to perform a `git add .` after writing the file or it will not be committed!
@@ -38,27 +33,27 @@ Using the information from Phase 1, I will generate three key pieces of content.
     ```markdown
     # CHANGELOG
 
-    ## ENTRY 2: Another Clickbait-sounding Title of Changes
+    ## ENTRY 2, YYYY/MM/DD 01:14 AM: Another Clickbait-sounding Title of Changes
 
-    A summary and overview of our works, together, this Current Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry should have a Clickbait-sounding title just to keep things interesting. You are allowed to use level 3 and level 4 headings. You do not usually have access to the current datetime so do NOT fabricate or invent dates in this log. Most of what we will put in this log will be similar to what we would put in the `git-checkpoint` file.
+    A summary and overview of our works, together, this Current Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry should have a Clickbait-sounding title just to keep things interesting. You are allowed to use level 3 and level 4 headings. You have access to the current datetime via the `date` command line app so do NOT fabricate or invent dates in this log.
 
-    ## ENTRY 1: Clickbait-sounding Title of Changes
+    ## ENTRY 1, 2025/01/04 09:50 PM: Clickbait-sounding Title of Changes
 
-    The summary and overview of the work we did together in a Previous Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry will have a Clickbait-sounding title just to keep things interesting. It would not be uncommon to see level 3 and level 4 headings here. **Notice there are no datetimes listed in this log.**
+    The summary and overview of the work we did together in a Previous Session. It could be a few sentences, a few paragraphs, or a few bullet points. Or a combination of all of the above. Each entry will have a Clickbait-sounding title just to keep things interesting. It would not be uncommon to see level 3 and level 4 headings here. **Important: datetimes listed in this log are accurate because they came from the `date` command.**
     ```
 
-3.  **The Commit Message:**
+2.  **The Commit Message:**
     - I will formulate a concise and conventional commit message.
     - **Subject Line:** A short, imperative summary (max 50 characters), prefixed with a type (e.g., `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`).
-    - **Body (Optional):** A more detailed explanation of the "why" and "what," separated from the subject by a blank line. This will often be a more condensed version of the `git-checkpoint` content.
+    - **Body (Required):** A more detailed explanation of the "why" and "what," separated from the subject by a blank line. This will often be a more condensed version of the `dev-journal/CHANGELOG.md` content.
 
 ## **Phase 3: Execution - The Commit**
 
 Once the content is prepared, I will execute the following sequence of commands:
 
-1.  **Stage all relevant changes:** This includes the modified project files and the newly created/overwritten `git-checkpoint` file.
+1.  **Stage all relevant changes:** This includes the modified project files and the newly updated `dev-journal/CHANGELOG.md` file.
 
-    - **Command:** `git add .` (or a more specific list of files, always including `./git-checkpoint`)
+    - **Command:** `git add .` (or a more specific list of files, always including `dev-journal/CHANGELOG.md`)
 
 2.  **Commit the staged changes:** I will use the multi-line commit message generated in the previous phase.
 
@@ -68,7 +63,7 @@ Once the content is prepared, I will execute the following sequence of commands:
 
 ## **Phase 4: Post-Commit - The Push Confirmation**
 
-After a successful commit, I will **stop and ask for your explicit permission** before interacting with the remote repository.
+**IMPORTANT:** After a successful commit, I will **stop and ask for your explicit permission** before interacting with the remote repository and "push"ing.
 
 1.  **I will ask:** "The changes have been committed. **Shall I push them to the remote repository?**"
 2.  **I will wait for your confirmation.** I will only proceed if you respond with a clear affirmative (e.g., "yes", "please push", "go ahead", "push it").

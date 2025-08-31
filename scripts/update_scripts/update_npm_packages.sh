@@ -29,6 +29,29 @@ execute_command() {
     fi
 }
 
+# Get version function
+get_version() {
+    local cmd="$1"
+    local version_output
+    version_output=$($cmd 2>/dev/null || echo "Not installed")
+    echo "$version_output"
+}
+
+# Display version change
+show_version_change() {
+    local tool_name="$1"
+    local old_version="$2"
+    local new_version="$3"
+    
+    if [[ "$old_version" == "Not installed" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${new_version} (newly installed)${NC}"
+    elif [[ "$old_version" != "$new_version" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${old_version} → ${new_version}${NC}"
+    else
+        echo -e "${MAGENTA}📊 ${tool_name} version: ${BOLD}${new_version} (no change)${NC}"
+    fi
+}
+
 # Check if npm is installed
 echo -e "${CYAN}🔍 Checking for npm installation...${NC}"
 if ! command -v npm &> /dev/null; then
@@ -36,6 +59,9 @@ if ! command -v npm &> /dev/null; then
 fi
 
 echo -e "${CYAN}🔍 Checking for pnpm installation...${NC}"
+
+# Capture current pnpm version before update
+old_pnpm_version=$(get_version "pnpm --version")
 
 if ! command -v pnpm &> /dev/null; then
     echo -e "${YELLOW}🚀 pnpm not found. Installing pnpm...${NC}"
@@ -49,8 +75,11 @@ else
     echo -e "${GREEN}✅ pnpm updated successfully!${NC}"
 fi
 
-# Display pnpm version
-echo -e "${MAGENTA}📊 pnpm version: ${BOLD}$(pnpm --version)${NC}"
+# Capture new pnpm version after update
+new_pnpm_version=$(get_version "pnpm --version")
+
+# Display pnpm version change
+show_version_change "pnpm" "$old_pnpm_version" "$new_pnpm_version"
 
 # Update packages
 echo -e "${CYAN}📦 Updating packages...${NC}"

@@ -29,6 +29,29 @@ execute_command() {
     fi
 }
 
+# Get version function
+get_version() {
+    local cmd="$1"
+    local version_output
+    version_output=$($cmd 2>/dev/null || echo "Not installed")
+    echo "$version_output"
+}
+
+# Display version change
+show_version_change() {
+    local tool_name="$1"
+    local old_version="$2"
+    local new_version="$3"
+    
+    if [[ "$old_version" == "Not installed" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${new_version} (newly installed)${NC}"
+    elif [[ "$old_version" != "$new_version" ]]; then
+        echo -e "${GREEN}📊 ${tool_name} version: ${BOLD}${old_version} → ${new_version}${NC}"
+    else
+        echo -e "${MAGENTA}📊 ${tool_name} version: ${BOLD}${new_version} (no change)${NC}"
+    fi
+}
+
 # Check if npm is installed
 echo -e "${CYAN}🔍 Checking for npm installation...${NC}"
 if ! command -v npm &> /dev/null; then
@@ -37,6 +60,9 @@ fi
 
 # Install repomix
 echo -e "${CYAN}📦 Installing repomix...${NC}"
+
+# Capture current version before update
+old_version=$(get_version "repomix --version")
 
 # Check if repomix is already installed
 if command -v repomix &> /dev/null; then
@@ -48,7 +74,10 @@ fi
 # Install/update repomix globally
 execute_command "npm install -g repomix" "Failed to install repomix. Please check your npm installation and try again."
 
-# Display repomix version
-echo -e "${MAGENTA}📊 repomix version: ${BOLD}$(repomix --version 2>/dev/null || echo 'Unable to determine version')${NC}"
+# Capture new version after update
+new_version=$(get_version "repomix --version")
+
+# Display version change
+show_version_change "repomix" "$old_version" "$new_version"
 
 echo -e "${GREEN}${BOLD}✨ All done! repomix has been installed successfully.${NC}" 

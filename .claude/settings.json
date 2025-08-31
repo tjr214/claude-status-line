@@ -3,11 +3,16 @@
 		"type": "command",
 		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.5"
 	},
+	"performance": {
+		"maxContextSize": "100%",
+		"autoGarbageCollection": true,
+		"memoryMonitoring": true
+	},
 	"permissions": {
 		"defaultMode": "acceptEdits",
 		"allow": [
 			"WebSearch",
-			"WebFetch(domain:*)",
+			"WebFetch(domain:docs.anthropic.com)",
 			"mcp__gemini-cli__ask-gemini",
 			"mcp__shadcn-ui__list_components",
 			"mcp__shadcn-ui__list_blocks",
@@ -23,15 +28,17 @@
 			"Bash(git stash push:*)",
 			"Bash(git stash:*)",
 			"Bash(chmod:*)",
+			"Bash(cp:*)",
+			"Bash(cat:*)",
 			"Bash(repomix:*)",
 			"Bash(rm repo.md)",
 			"Bash(rm plan_from_gemini.md)",
 			"Bash(rm dev-journal/plan_from_gemini.md)",
-			"Bash(rm test*)",
-			"Bash(rm *test)",
-			"Bash(rm *test*)",
+			"Bash(rm test:*)",
+			"Bash(rm :*test:*)",
 			"Bash(deno:*)",
 			"Bash(ruff check:*)",
+			"Bash(ruff format:*)",
 			"Bash(pip install:*)",
 			"Bash(npx tsc:*)",
 			"Bash(npm install:*)",
@@ -53,6 +60,7 @@
 			"Bash(git branch:*)",
 			"Bash(git fetch:*)",
 			"Bash(git pull:*)",
+			"Bash(git log:*)",
 			"Bash(pytest:*)",
 			"Bash(python -m pytest:*)",
 			"Bash(python -m:*)",
@@ -63,23 +71,10 @@
 			"Bash(node:*)",
 			"Bash(ls:*)",
 			"Bash(find:*)",
-			"Bash(grep:*)",
-			"mcp__task-master-ai__analyze_project_complexity",
-			"mcp__task-master-ai__expand_all",
-			"mcp__task-master-ai__get_tasks",
-			"mcp__task-master-ai__set_task_status",
-			"mcp__task-master-ai__get_task",
-			"mcp__task-master-ai__add_task",
-			"mcp__task-master-ai__parse_prd",
-			"mcp__task-master-ai__next_task",
-			"mcp__task-master-ai__update_task",
-			"mcp__task-master-ai__complexity_report",
-			"mcp__task-master-ai__update_subtask",
-			"mcp__task-master-ai__expand_task",
-			"mcp__task-master-ai__research"
+			"Bash(grep:*)"
 		],
 		"deny": []
 	},
 	"enableAllProjectMcpServers": true,
-	"enabledMcpjsonServers": ["context7", "task-master-ai", "gemini-cli", "docs-for-original-template"]
+	"enabledMcpjsonServers": ["context7", "shadcn-ui", "gemini-cli", "docs-for-original-template"]
 }

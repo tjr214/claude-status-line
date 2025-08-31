@@ -1,3 +1,8 @@
+**IMPORTANT:** The project we are working on is a fork of an original repo. The `CLAUDE.md` file of the original repo is located below. It is now outdated as we have updated the project since it was originally written. But it still contains important and valid information that you may need. Also, it is important for historical purposes.
+
+Here is the original repo's CLAUDE instruction file:
+
+````
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -55,7 +60,7 @@ The status line automatically detects and displays git remote repository informa
 - **Detection**: Uses `git config --get remote.origin.url` to get remote URL
 - **Parsing**: Supports HTTPS, SSH, and Git protocol URLs with regex patterns:
   - `https://github.com/username/repo.git` → `🔗 username/repo`
-  - `git@github.com:username/repo.git` → `🔗 username/repo` 
+  - `git@github.com:username/repo.git` → `🔗 username/repo`
   - `git://github.com/username/repo.git` → `🔗 username/repo`
 - **Fallback**: When no remote exists, displays directory basename with `📂 directory-name`
 - **Priority**: Remote repository info takes precedence over directory name display
@@ -76,3 +81,5 @@ deno fmt && deno lint
 ```
 
 The project has strict TypeScript configuration with exactOptionalPropertyTypes enabled.
+
+````
