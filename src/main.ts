@@ -13,6 +13,19 @@ import { getGitInfo } from "./git.ts";
 import { getPythonEnvInfo } from "./python.ts";
 import type { ClaudeContext } from "./types.ts";
 
+function getContextPercentageColor(percentage: number): string {
+  if (percentage >= 1 && percentage <= 25) {
+    return "\x1b[32m"; // green
+  } else if (percentage > 25 && percentage <= 60) {
+    return "\x1b[33m"; // yellow
+  } else if (percentage > 60 && percentage < 85) {
+    return "\x1b[38;5;208m"; // orange
+  } else if (percentage >= 85 && percentage <= 100) {
+    return "\x1b[31m"; // red
+  }
+  return "\x1b[0m"; // default/reset
+}
+
 async function buildStatusLine(
   currency: string,
   displayModel: boolean,
@@ -69,17 +82,23 @@ async function buildStatusLine(
 
   const contextTokens = await calculateContextTokens(transcriptPath);
   if (contextTokens) {
-    components.push(`📈 ${contextTokens.percentage}%`);
+    const colorCode = getContextPercentageColor(contextTokens.percentage);
+    const resetCode = "\x1b[0m";
+    components.push(`📈 ${colorCode}${contextTokens.percentage}%${resetCode}`);
   } else {
-    components.push(`📈 0%`);
+    const colorCode = getContextPercentageColor(0);
+    const resetCode = "\x1b[0m";
+    components.push(`📈 ${colorCode}0%${resetCode}`);
   }
 
   // Get git information and add to components.
   const gitInfo = await getGitInfo(currentDir);
-  
+
   // Display remote git info if available, otherwise show directory name
   if (gitInfo?.remoteInfo) {
-    components.push(`🔗 ${gitInfo.remoteInfo.username}/${gitInfo.remoteInfo.repo}`);
+    components.push(
+      `🔗 ${gitInfo.remoteInfo.username}/${gitInfo.remoteInfo.repo}`,
+    );
   } else {
     // Get just the directory name for cleaner display
     const dirName = currentDir ? basename(currentDir) : "~";
@@ -105,7 +124,7 @@ if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.5")
+      .version("0.1.6")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",
@@ -117,11 +136,19 @@ if (import.meta.main) {
       .option("-m, --display-model", "Display AI model name in status line", {
         default: false,
       })
-      .option("-p, --display-project-name", "Display project name in status line", {
-        default: false,
-      })
+      .option(
+        "-p, --display-project-name",
+        "Display project name in status line",
+        {
+          default: false,
+        },
+      )
       .action(async (options) => {
-        await buildStatusLine(options.currency, options.displayModel, options.displayProjectName);
+        await buildStatusLine(
+          options.currency,
+          options.displayModel,
+          options.displayProjectName,
+        );
       })
       .parse(Deno.args);
   } catch (err) {
