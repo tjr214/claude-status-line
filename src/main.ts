@@ -21,7 +21,7 @@ function formatTokenPercentage(percentage: number): string {
 		return dim(rgb24(displayStr, 0xff0000)); // Red
 	}
 	if (percentage >= 61) {
-		return dim(rgb24(displayStr, 0xff6600)); // Orange
+		return dim(rgb24(displayStr, 0xff8800)); // Orange
 	}
 	if (percentage >= 46) {
 		return dim(rgb24(displayStr, 0xffff00)); // Yellow
@@ -123,8 +123,8 @@ if (import.meta.main) {
 	try {
 		await new Command()
 			.name("claude-status-line")
-			.version("0.1.14")
-			.description("A status line for Claude Code")
+			.version("0.1.15")
+			.description("An enhanced status line for Claude Code")
 			.option("-c, --currency <currency:string>", "Currency code for session cost display", {
 				default: "CAD",
 			})

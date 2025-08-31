@@ -19,7 +19,7 @@ A TypeScript/Deno-based status line for Claude Code that displays project inform
 The context usage percentage (📈) uses intelligent color coding to provide instant visual feedback about your token consumption:
 
 - 🟢 **Green (1-45%)**: Good usage - plenty of context remaining
-- 🟡 **Yellow (46-60%)**: Caution - approaching moderate usage  
+- 🟡 **Yellow (46-60%)**: Caution - approaching moderate usage
 - 🟠 **Orange (61-79%)**: Warning - high usage, consider context management
 - 🔴 **Red (80%+)**: Critical - very high usage, context limit approaching
 - ⚪ **Default (0%)**: No context usage
@@ -34,7 +34,7 @@ Add this to your `.claude/settings.json`:
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.15"
 	}
 }
 ```
@@ -44,13 +44,14 @@ Add this to your `.claude/settings.json`:
 You can customize the status line with the following options:
 
 #### Currency Display
+
 Add the `--currency` flag to change the currency used for session cost display:
 
 ```json
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --currency USD"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.15 --currency USD"
 	}
 }
 ```
@@ -58,37 +59,40 @@ Add the `--currency` flag to change the currency used for session cost display:
 Supported currencies include: USD, EUR, GBP, JPY, AUD, and many others. Defaults to CAD.
 
 #### Model Display
+
 Add the `--display-model` flag to show the Claude model name in the status line:
 
 ```json
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --display-model"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.15 --display-model"
 	}
 }
 ```
 
 #### Project Name Display
+
 Add the `--display-project-name` flag to show the project name in the status line (only when project differs from current directory):
 
 ```json
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.15 --display-project-name"
 	}
 }
 ```
 
 #### Combined Options
+
 You can combine multiple options:
 
 ```json
 {
 	"statusLine": {
 		"type": "command",
-		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.14 --currency USD --display-model --display-project-name"
+		"command": "deno run --allow-net --allow-env --allow-read --allow-write --allow-run --allow-sys jsr:@tjr214/claude-status-line@0.1.15 --currency USD --display-model --display-project-name"
 	}
 }
 ```
@@ -175,28 +179,35 @@ The status line tracks your Claude usage by:
 ### Example Output
 
 #### Full Status Line (with all features enabled, git remote repository)
+
 ```
 📁 my-project | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 🔗 username/repo-name | 🌿 feature-branch | 🐍 venv
 ```
-*Note: The `67%` would appear in orange color indicating high context usage.*
+
+_Note: The `67%` would appear in orange color indicating high context usage._
 
 #### Default Status Line (git remote repository detected)
+
 ```
 💰 $0.45 session | 📈 67% | 🔗 tjr214/claude-status-line | 🌿 main
 ```
-*Note: Context percentages are color-coded based on usage levels (green/yellow/orange/red).*
+
+_Note: Context percentages are color-coded based on usage levels (green/yellow/orange/red)._
 
 #### Fallback to Directory Name (no git remote)
+
 ```
 💰 $0.45 session | 📈 67% | 📂 local-directory | 🌿 main | 🐍 poetry-env
 ```
 
 #### Non-Git Repository
+
 ```
 💰 $0.45 session | 📈 67% | 📂 my-folder
 ```
 
 #### With Project Name Flag and Model Display
+
 ```
 📁 enterprise-app | 🤖 Claude 3.5 Sonnet | 💰 $0.45 session | 📈 67% | 🔗 company/backend-api | 🌿 develop
 ```
