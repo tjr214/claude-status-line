@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert";
-import { dim, rgb24 } from "jsr:@std/fmt/colors";
+import { dim, rgb24 } from "jsr:@std/fmt@^1.0.8/colors";
 
 // Import the function we want to test
 // Since it's not exported, we'll need to refactor or test integration

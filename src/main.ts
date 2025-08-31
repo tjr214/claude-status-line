@@ -4,7 +4,7 @@ import { Buffer } from "node:buffer";
 import { logger } from "ccusage/logger";
 import { calculateContextTokens, loadSessionUsageById } from "ccusage/data-loader";
 import { Command } from "@cliffy/command";
-import { dim, rgb24 } from "jsr:@std/fmt/colors";
+import { dim, rgb24 } from "jsr:@std/fmt@^1.0.8/colors";
 
 import { formatCurrency } from "./currency.ts";
 import { getGitInfo } from "./git.ts";
