@@ -120,7 +120,7 @@ if (import.meta.main) {
 	try {
 		await new Command()
 			.name("claude-status-line")
-			.version("0.1.12")
+			.version("0.1.11")
 			.description("A status line for Claude Code")
 			.option("-c, --currency <currency:string>", "Currency code for session cost display", {
 				default: "CAD",
@@ -136,7 +136,7 @@ if (import.meta.main) {
 			})
 			.parse(Deno.args);
 	} catch (err) {
-		process.stderr.write(`Error: ${err instanceof Error ? err.message : String(err)}`);
+		console.error("Error:", err instanceof Error ? err.message : String(err));
 		process.exit(1);
 	}
 }
