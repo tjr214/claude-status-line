@@ -15,13 +15,13 @@ import type { ClaudeContext } from "./types.ts";
 
 function getContextPercentageColor(percentage: number): string {
   if (percentage >= 1 && percentage < 25) {
-    return "\x1b[32m"; // bright green
+    return "\x1b[32m"; // green
   } else if (percentage >= 25 && percentage < 60) {
-    return "\x1b[33m"; // bright yellow
+    return "\x1b[33m"; // yellow
   } else if (percentage >= 60 && percentage < 85) {
-    return "\x1b[38;5;208m"; // bright orange
+    return "\x1b[38;5;208m"; // orange
   } else if (percentage >= 85 && percentage <= 100) {
-    return "\x1b[31m"; // bright red
+    return "\x1b[31m"; // red
   }
   // For 0% or any other case, return empty string (no color change)
   return "";
@@ -84,7 +84,7 @@ async function buildStatusLine(
   const contextTokens = await calculateContextTokens(transcriptPath);
   if (contextTokens) {
     const colorCode = getContextPercentageColor(contextTokens.percentage);
-    const resetCode = colorCode ? "\x1b[2m" : ""; // reset back to dim mode
+    const resetCode = colorCode ? "\x1b[0m" : "";
     components.push(`📈 ${colorCode}${contextTokens.percentage}%${resetCode}`);
   } else {
     // 0% should appear dim (no special color)
@@ -116,15 +116,15 @@ async function buildStatusLine(
     components.push(`🐍 ${pythonInfo.name}`);
   }
 
-  // Join components with separator and output with dim styling
-  console.log(`\x1b[2m${components.join(" | ")}\x1b[0m`);
+  // Join components with separator and output
+  console.log(components.join(" | "));
 }
 
 if (import.meta.main) {
   try {
     await new Command()
       .name("claude-status-line")
-      .version("0.1.8")
+      .version("0.1.7")
       .description("A status line for Claude Code")
       .option(
         "-c, --currency <currency:string>",
